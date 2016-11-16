@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
  * http://hadoop.apache.org/docs/r2.6.5/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html
  * <p/>
  * <pre>
- *     bin/hadoop jar share/hadoop/mapreduce/mr-sample.jar com.neoremind.mrsample.WordCount words1 output
+ *     bin/hadoop jar share/hadoop/mapreduce/mr-sample.jar com.neoremind.mrsample.mapred.WordCount words1 output
  * </pre>
  *
  * @author zhangxu

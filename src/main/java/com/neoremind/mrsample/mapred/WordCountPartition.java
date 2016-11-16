@@ -15,10 +15,11 @@ import org.apache.hadoop.util.ToolRunner;
  * Word count with {@link LexicalPartitioner} and facilitate {@link ToolRunner} to execute job
  * <p/>
  * Example link: https://github.com/yhemanth/hadoop-training-samples
- *
- * <pre>
- *     bin/hadoop jar share/hadoop/mapreduce/mr-sample.jar com.neoremind.mrsample.mapred.WordCountPartition  /fewwords /output4
- * </pre>
+ * <p/>
+ * <code>
+ * bin/hadoop jar share/hadoop/mapreduce/mr-sample.jar com.neoremind.mrsample.mapred.WordCountPartition
+ * -Dwordcount.partitioner.lexical=true /fewwords /output4
+ * </code>
  *
  * @author zhangxu
  */
