@@ -1,0 +1,5 @@
+1	Iphone	5
+2	Macbook	88
+3	NikeShoes	200
+4	Bag	500
+5	Car	400
