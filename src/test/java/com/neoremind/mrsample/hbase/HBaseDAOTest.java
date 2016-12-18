@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.regionserver.NoSuchColumnFamilyException;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -91,6 +92,11 @@ public class HBaseDAOTest {
         hBaseDAO.listTables();
     }
 
+    @Test(expected = NoSuchColumnFamilyException.class)
+    public void testPutNegative() throws IOException {
+        hBaseDAO.get(TABLE, "r1", "NO_EXIST", "q1");
+    }
+
     @Test
     public void testPutAndGet() throws IOException {
         hBaseDAO.put(TABLE, "r1", "cf1", "q1", "v_testPutAndGet");
@@ -141,6 +147,11 @@ public class HBaseDAOTest {
         hBaseDAO.delete(TABLE, "r1", "cf1", "q99");
         result = hBaseDAO.get(TABLE, "r1", "cf1", "q99");
         assertThat(result.getValue(Bytes.toBytes("cf1"), Bytes.toBytes("q99")), nullValue());
+    }
+
+    @Test
+    public void testScan() throws IOException {
+        hBaseDAO.scan(TABLE, "cf1", "q1");
     }
 
 }

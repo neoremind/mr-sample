@@ -166,6 +166,32 @@ public class HBaseDAO implements Closeable {
         table.close();
     }
 
+    public void scan(String tableName, String colFamily, String col) throws IOException {
+        Table table = connection.getTable(TableName.valueOf(tableName));
+        // Instantiating the Scan class
+        Scan scan = new Scan();
+        scan.setMaxVersions();
+
+        // Scanning the required columns
+        if (colFamily != null && col == null) {
+            scan.addFamily(Bytes.toBytes(colFamily));
+        }
+        if (colFamily != null && col != null) {
+            scan.addColumn(Bytes.toBytes(colFamily), Bytes.toBytes(col));
+        }
+
+        // Getting the scan result
+        ResultScanner scanner = table.getScanner(scan);
+
+        // Reading values from scan result
+        for (Result result = scanner.next(); result != null; result = scanner.next()) {
+            showCell(result);
+        }
+        //closing the scanner
+        scanner.close();
+        table.close();
+    }
+
     public void showCell(Result result) {
         Cell[] cells = result.rawCells();
         for (Cell cell : cells) {
