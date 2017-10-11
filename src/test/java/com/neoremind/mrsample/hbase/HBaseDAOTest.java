@@ -77,7 +77,7 @@ public class HBaseDAOTest {
 
     @BeforeClass
     public static void setUp() throws IOException {
-        hBaseDAO = HBaseDAO.newInsance();
+        hBaseDAO = HBaseDAO.newInstance();
         hBaseDAO.createTable(TABLE, new String[]{CF1, CF2});
     }
 
@@ -98,6 +98,11 @@ public class HBaseDAOTest {
     }
 
     @Test
+    public void testGet() throws IOException {
+        Result result = hBaseDAO.get(TABLE, "admin", "cf2", "q1");
+    }
+
+    @Test
     public void testPutAndGet() throws IOException {
         hBaseDAO.put(TABLE, "r1", "cf1", "q1", "v_testPutAndGet");
         Result result = hBaseDAO.get(TABLE, "r1", "cf1", "q1");
@@ -108,7 +113,8 @@ public class HBaseDAOTest {
 
     @Test
     public void testPutAndGet2() throws IOException {
-        hBaseDAO.put(TABLE, "r1", new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q2"), Bytes.toBytes("v_testPutAndGet2")));
+        hBaseDAO.put(TABLE, "r1", new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q2"), Bytes
+                .toBytes("v_testPutAndGet2")));
         Result result = hBaseDAO.get(TABLE, "r1", "cf1", "q2");
         assertThat(result.getRow(), is(Bytes.toBytes("r1")));
         assertThat(result.getValue(Bytes.toBytes("cf1"), Bytes.toBytes("q2")), is(Bytes.toBytes("v_testPutAndGet2")));
@@ -117,12 +123,18 @@ public class HBaseDAOTest {
     @Test
     public void testBatchPut() throws IOException {
         List<Cell> cellList = Lists.newArrayList(
-                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q1"), 100000l, Bytes.toBytes("v_testBatchPut")),
-                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1004l, Bytes.toBytes("v_testBatchPut_1")),  //TODO overriding column so test cases is useless
-                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1003l, Bytes.toBytes("v_testBatchPut_2")),
-                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1002l, Bytes.toBytes("v_testBatchPut_3")),
-                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1001l, Bytes.toBytes("v_testBatchPut_4")),
-                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1000l, Bytes.toBytes("v_testBatchPut_5"))
+                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q1"), 100000l, Bytes.toBytes
+                        ("v_testBatchPut")),
+                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1004l, Bytes.toBytes
+                        ("v_testBatchPut_1")),  //TODO overriding column so test cases is useless
+                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1003l, Bytes.toBytes
+                        ("v_testBatchPut_2")),
+                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1002l, Bytes.toBytes
+                        ("v_testBatchPut_3")),
+                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1001l, Bytes.toBytes
+                        ("v_testBatchPut_4")),
+                new KeyValue(Bytes.toBytes("r1"), Bytes.toBytes("cf1"), Bytes.toBytes("q3"), 1000l, Bytes.toBytes
+                        ("v_testBatchPut_5"))
         );
         hBaseDAO.batchPut(TABLE, "r1", cellList);
         Result result = hBaseDAO.getAllVersions(TABLE, "r1", "cf1", "q3");
